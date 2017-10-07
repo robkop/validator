@@ -11,7 +11,7 @@ Returns true is str.length >= num.
 TODO: params: special characters
 
 str.isNRB()
-Checks Polish IBNA bank account numer.
+Checks Polish IBAN bank account numer.
 Trims, removes whitespaces and removes non digit chars.
 Returns obj: 
 - "ok" boolean, if string is valid "true", if not "false"
