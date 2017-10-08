@@ -70,7 +70,8 @@ String.prototype.isNRB = function () {
             return {
                 ok: true,
                 desc: "Bank account is valid.",
-                bankName: f
+                bankName: f,
+                finalNRB: this.trim().replace(/ /g, "").replace(/-/g, "").replace(/\D/g, "")
             }
         } else {
             return {
