@@ -17,3 +17,4 @@ Returns obj:
 - "ok" boolean, if string is valid "true", if not "false"
 - "desc" string with description 
 - "bankName'
+- "finalNRB" string, clean bank account
