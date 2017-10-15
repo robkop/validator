@@ -6,14 +6,38 @@ String.prototype.isEmail = function () {
         return false;
     };
 };
-String.prototype.isPassword = function (num) {
+String.prototype.isPassword = function (num, special) {
     if (this.length >= num) {
+        const reg = /[$-/:-?{-~!"^_`\[\]]/;
+        if (special) {
+            if (reg.test(this)) {
+                return {
+                    test: 'OK',
+                    desc: ''
+                }
+            } else {
+                return {
+                    test: 'fail',
+                    desc: 'Password doeas not contain special character.'
+                }
+            }
+
+        } else {
+            return {
+                test: 'OK',
+                desc: ''
+            }
+        }
         return true
     } else {
-        return false
+        return {
+            test: 'fail',
+            desc: 'Password is too short.'
+        }
     };
-};
 
+
+};
 String.prototype.isNRB = function () {
     const p = {
         1010: "Narodowy Bank Polski",
@@ -93,4 +117,65 @@ String.prototype.isNRB = function () {
         };
     }
 
+};
+String.prototype.isPlPostalCode = function () {
+    const x = this.trim().replace(/ /g, "").replace(/\D/g, "");
+    const reg = /\d{5}/;
+    const y = x.substr(0, 1);
+
+    const regions = {
+        0: 'okręg warszawski (woj. warszawskie)',
+        1: 'okręg olsztyński (woj. olsztyńskie i białostockie)',
+        2: 'okręg lubelski (woj. lubelskie i kieleckie)',
+        3: 'okręg krakowski (woj. krakowskie i rzeszowskie)',
+        4: 'okręg katowicki (woj. katowickie i opolskie)',
+        5: 'okręg wrocławski (woj. wrocławskie)',
+        6: 'okręg poznański (woj. poznańskie i zielonogórskie)',
+        7: 'okręg szczeciński (woj. szczecińskie i koszalińskie)',
+        8: 'okręg gdański (woj. gdańskie i bydgoskie)',
+        9: 'okręg łódzki (woj. łódzkie)'
+    }
+
+    if (reg.test(x)) {
+        return {
+            postalCodeOK: true,
+            postalCode: x.substr(0, 2) + "-" + x.substr(3, 23),
+            postalCodeRegion: regions[y]
+
+        }
+    } else {
+        return {
+            postalCodeOK: false
+        }
+    }
+
+};
+String.prototype.isPlVatID = function () {
+    const weights = [6, 5, 7, 2, 3, 4, 5, 6, 7];
+    nip = this.replace(/[\s-]/g, '');
+
+    if (nip.length == 10 && parseInt(nip, 10) > 0) {
+        let sum = 0;
+        for (let i = 0; i < 9; i++) {
+            sum += nip[i] * weights[i];
+        }
+        if ((sum % 11) == nip[9]) {
+            return {
+                isValid: true,
+                nip: nip
+            };
+        } else {
+            return false;
+        }
+
+    }
+    return false;
+};
+String.prototype.replaceEnter = function () {
+    return this.replace(/\n/g, ',');
+};
+String.prototype.replaceEnterQT = function () {
+    const x = this.replace(/\n/g, "','")
+    const y = "'" + x + "'";
+    return y
 };
